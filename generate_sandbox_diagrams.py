@@ -11,50 +11,69 @@ def generate_sandbox_architecture():
     dot = Digraph('Sandbox Architecture', format='png', engine='dot')
     dot.attr(
         rankdir='TB',
-        size='20,16',
+        size='24,18',
         dpi='300',
         bgcolor='transparent',
         fontname='Arial',
-        label='''人生学习沙盒 v2.0 - 完整架构
-仿真环境 + 攻击/防守 + 轨迹生成 + 评估优化''',
+        label='''🎯 人生学习沙盒 v2.0 - 完整架构
+从第一性原理出发：运气因子 (~10%) + 知识点匹配 + 防背题机制''',
         labelloc='t',
-        fontsize='20',
+        fontsize='18',
+        fontcolor='#2C3E50',
     )
 
-    # 颜色方案
+    # 现代莫兰迪色系
     colors = {
-        'env': '#E8F4F8',      # 仿真环境
-        'agent': '#E8F8E8',    # 智能体
-        'attack': '#F8E8E8',   # 攻击
-        'defense': '#E8E8F8',  # 防御
-        'trajectory': '#F8F0E8', # 轨迹
-        'eval': '#F0E8F8',     # 评估
-        'data': '#FFF8E8',     # 数据
+        'input': '#F5E6E8',      # 输入层 - 淡粉
+        'env': '#E8F4F8',        # 仿真 - 淡蓝
+        'attack': '#FCE8E6',     # 攻击 - 淡红
+        'defense': '#E6E8F4',    # 防御 - 淡紫
+        'trajectory': '#F8F0E6', # 轨迹 - 淡橙
+        'eval': '#F0E8F4',       # 评估 - 淡紫
+        'data': '#FFF4E6',       # 数据 - 淡黄
+    }
+
+    # 节点通用样式
+    node_attrs = {
+        'style': 'filled,rounded',
+        'penwidth': '1.5',
+        'fontname': 'Arial',
     }
 
     # === 第 1 层：用户输入 ===
     with dot.subgraph(name='cluster_input') as s:
-        s.attr(label='用户输入层', style='filled', fillcolor='#FFF5F5', fontsize='14')
-        s.node('user_profile', '用户画像\n(年龄/阶段/偏好)', shape='box', style='filled,rounded', fillcolor='#FFB6C1')
-        s.node('skill_config', '技能配置\n(初始技能树)', shape='box', style='filled,rounded', fillcolor='#FFB6C1')
-        s.node('env_config', '环境配置\n(难度/随机种子)', shape='box', style='filled,rounded', fillcolor='#FFB6C1')
+        s.attr(label='👤 用户输入层', style='filled,rounded', fillcolor=colors['input'],
+               fontsize='13', penwidth='2', color='#E0B0B8')
+        s.node('user_profile', '用户画像\n(年龄/阶段/偏好)', shape='box',
+               style='filled,rounded', fillcolor='#FFB6C1', penwidth='1.5')
+        s.node('skill_config', '技能配置\n(初始技能树)', shape='box',
+               style='filled,rounded', fillcolor='#FFB6C1', penwidth='1.5')
+        s.node('env_config', '环境配置\n(难度/随机种子)', shape='box',
+               style='filled,rounded', fillcolor='#FFB6C1', penwidth='1.5')
 
     # === 第 2 层：仿真环境 ===
     with dot.subgraph(name='cluster_simulation') as s:
-        s.attr(label='仿真环境层', style='filled', fillcolor=colors['env'], fontsize='14')
-
-        s.node('stage_engine', '阶段引擎\n(7 人生阶段)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
-        s.node('event_generator', '事件生成器\n(随机/ scripted)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
-        s.node('choice_system', '选择系统\n(分支决策)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
-        s.node('skill_tracker', '技能追踪器\n(EXP/Level)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
+        s.attr(label='🌍 仿真环境层', style='filled,rounded', fillcolor=colors['env'],
+               fontsize='13', penwidth='2', color='#7EC8E3')
+        s.node('stage_engine', '阶段引擎\n(7 人生阶段)', shape='box',
+               style='filled,rounded', fillcolor='#4ECDC4', penwidth='1.5')
+        s.node('event_generator', '事件生成器\n(随机/脚本)', shape='box',
+               style='filled,rounded', fillcolor='#4ECDC4', penwidth='1.5')
+        s.node('choice_system', '选择系统\n(分支决策)', shape='box',
+               style='filled,rounded', fillcolor='#4ECDC4', penwidth='1.5')
+        s.node('skill_tracker', '技能追踪器\n(EXP/Level)', shape='box',
+               style='filled,rounded', fillcolor='#4ECDC4', penwidth='1.5')
 
     # === 第 3 层：攻击模块 ===
     with dot.subgraph(name='cluster_attack') as s:
-        s.attr(label='攻击模块 (Adversarial)', style='filled', fillcolor=colors['attack'], fontsize='14')
-
-        s.node('attack_gen', '攻击生成器', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
-        s.node('noise_inject', '噪声注入\n(模糊/涂抹/遮挡)', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
-        s.node('adv_perturb', '对抗扰动\n(FGSM/PGD)', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
+        s.attr(label='🔴 攻击模块 (Adversarial)', style='filled,rounded', fillcolor=colors['attack'],
+               fontsize='13', penwidth='2', color='#E88080')
+        s.node('attack_gen', '攻击生成器', shape='box',
+               style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white', penwidth='1.5')
+        s.node('noise_inject', '噪声注入\n(模糊/涂抹/遮挡)', shape='box',
+               style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white', penwidth='1.5')
+        s.node('adv_perturb', '对抗扰动\n(FGSM/PGD)', shape='box',
+               style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white', penwidth='1.5')
         s.node('logic_attack', '逻辑攻击\n(矛盾/陷阱)', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
 
     # === 第 4 层：防御模块 ===
@@ -234,20 +253,25 @@ def generate_trajectory_pipeline():
     dot = Digraph('Trajectory Pipeline', format='png', engine='dot')
     dot.attr(
         rankdir='TB',
-        size='16,20',
+        size='20,24',
         dpi='300',
         bgcolor='transparent',
         fontname='Arial',
-        label='轨迹数据生成与评估流水线',
+        label='''📊 轨迹数据生成与评估流水线
+第一性原理：运气因子 (~10%) + 知识点匹配 + 防背题机制''',
         labelloc='t',
-        fontsize='18',
+        fontsize='16',
+        fontcolor='#2C3E50',
     )
 
     # 阶段 1: 数据采集
     with dot.subgraph(name='cluster_collect') as s:
-        s.attr(label='📥 数据采集', style='filled', fillcolor='#FFF0E0', fontsize='14')
-        s.node('raw_events', '原始事件\n(决策点)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
-        s.node('raw_states', '状态序列\n(S₁,S₂,...,Sn)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
+        s.attr(label='📥 数据采集', style='filled,rounded', fillcolor='#FFF0E0',
+               fontsize='13', penwidth='2', color='#FFB380')
+        s.node('raw_events', '原始事件\n(决策点)', shape='box',
+               style='filled,rounded', fillcolor='#FFA07A', penwidth='1.5')
+        s.node('raw_states', '状态序列\n(S₁,S₂,...,Sn)', shape='box',
+               style='filled,rounded', fillcolor='#FFA07A', penwidth='1.5')
         s.node('raw_actions', '动作序列\n(A₁,A₂,...,An)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
         s.node('raw_rewards', '奖励信号\n(R₁,R₂,...,Rn)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
 
