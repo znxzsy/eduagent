@@ -413,6 +413,36 @@ body {
     line-height: 1.8;
 }
 
+/* 核心流程图 (全宽 Hero) */
+.sandbox-flow-hero {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.sandbox-flow-hero h3 {
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+}
+
+.sandbox-flow-hero img {
+    width: 100%;
+    max-width: 1400px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.flow-desc {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
 .sandbox-diagrams {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -557,6 +587,9 @@ body {
     }
     .sandbox-diagrams {
         grid-template-columns: 1fr;
+    }
+    .sandbox-flow-hero img {
+        max-width: 100%;
     }
     .nav-links {
         display: none;

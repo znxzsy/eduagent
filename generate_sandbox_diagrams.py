@@ -387,9 +387,178 @@ def generate_life_decision_tree():
     return filepath
 
 
+# ============================================================
+# 图 5: 人生沙盒核心流程 (美化版)
+# ============================================================
+def generate_sandbox_flow_v2():
+    """美化版人生沙盒流程图 - 展示完整的事件驱动和成长系统"""
+    dot = Digraph('Sandbox Flow v2', format='png', engine='dot')
+    dot.attr(
+        rankdir='TB',
+        size='24,18',
+        dpi='300',
+        bgcolor='transparent',
+        fontname='Arial',
+        label='''🎮 人生沙盒核心流程 v2.0
+事件驱动 × 选择分支 × 技能成长 × 攻守对抗''',
+        labelloc='t',
+        fontsize='22',
+    )
+
+    # 颜色方案
+    colors = {
+        'stage': '#E3F2FD',
+        'event': '#FFF3E0',
+        'choice': '#F3E5F5',
+        'skill': '#E8F5E9',
+        'attack': '#FFEBEE',
+        'defense': '#ECEFF1',
+    }
+
+    # === 第 1 层：人生阶段 ===
+    with dot.subgraph(name='cluster_stages') as s:
+        s.attr(label='📍 人生阶段', style='filled', fillcolor=colors['stage'], fontsize='14', penwidth='2')
+
+        stages = [
+            ('kindergarten', '幼儿园\n(3-6 岁)', '#FFCDD2'),
+            ('primary', '小学\n(6-12 岁)', '#C8E6C9'),
+            ('middle', '初中\n(12-15 岁)', '#FFF9C4'),
+            ('high', '高中\n(15-18 岁)', '#B2DFDB'),
+            ('university', '大学\n(18-22 岁)', '#FFCCBC'),
+            ('career', '职业\n(22-60 岁)', '#D1C4E9'),
+            ('retirement', '退休\n(60 岁+)', '#BCAAA4'),
+        ]
+
+        prev_stage = None
+        for stage_id, stage_label, color in stages:
+            s.node(stage_id, stage_label, shape='box', style='filled,rounded',
+                   fillcolor=color, fontsize='13', penwidth='2')
+            if prev_stage:
+                s.edge(prev_stage, stage_id, penwidth='3', color='#1976D2',
+                       label='阶段推进', fontsize='10')
+            prev_stage = stage_id
+
+    # === 第 2 层：事件系统 ===
+    with dot.subgraph(name='cluster_events') as s:
+        s.attr(label='🎲 事件系统', style='filled', fillcolor=colors['event'], fontsize='14', penwidth='2')
+
+        s.node('event_trigger', '事件触发\n(随机/ scripted)', shape='hexagon',
+               style='filled', fillcolor='#FFB74D', fontsize='12', penwidth='2')
+
+        s.node('event_learn', '📚 学习事件\n(上课/培训)', shape='box',
+               style='filled,rounded', fillcolor='#81C784', fontsize='11')
+        s.node('event_challenge', '⚡ 挑战事件\n(考试/面试)', shape='box',
+               style='filled,rounded', fillcolor='#E57373', fontsize='11', fontcolor='white')
+        s.node('event_opportunity', '🎁 机遇事件\n(社团/项目)', shape='box',
+               style='filled,rounded', fillcolor='#64B5F6', fontsize='11')
+        s.node('event_random', '🎰 随机事件\n(偶遇/意外)', shape='box',
+               style='filled,rounded', fillcolor='#BA68C8', fontsize='11')
+
+        s.edge('event_trigger', 'event_learn', style='dashed', color='#81C78480')
+        s.edge('event_trigger', 'event_challenge', style='dashed', color='#E5737380')
+        s.edge('event_trigger', 'event_opportunity', style='dashed', color='#64B5F680')
+        s.edge('event_trigger', 'event_random', style='dashed', color='#BA68C880')
+
+    # === 第 3 层：选择系统 ===
+    with dot.subgraph(name='cluster_choices') as s:
+        s.attr(label='🤔 选择系统', style='filled', fillcolor=colors['choice'], fontsize='14', penwidth='2')
+
+        s.node('choice_branch', '决策分支点', shape='diamond',
+               style='filled', fillcolor='#CE93D8', fontsize='12', penwidth='2')
+
+        s.node('choice_a', '选择 A\n(保守路线)', shape='box',
+               style='filled,rounded', fillcolor='#A5D6A7', fontsize='10')
+        s.node('choice_b', '选择 B\n(冒险路线)', shape='box',
+               style='filled,rounded', fillcolor='#EF9A9A', fontsize='10')
+        s.node('choice_c', '选择 C\n(平衡路线)', shape='box',
+               style='filled,rounded', fillcolor='#90CAF9', fontsize='10')
+
+        s.edge('choice_branch', 'choice_a', style='solid', color='#2E7D32')
+        s.edge('choice_branch', 'choice_b', style='solid', color='#C62828')
+        s.edge('choice_branch', 'choice_c', style='solid', color='#1565C0')
+
+    # === 第 4 层：技能成长 ===
+    with dot.subgraph(name='cluster_skills') as s:
+        s.attr(label='📈 技能成长系统', style='filled', fillcolor=colors['skill'], fontsize='14', penwidth='2')
+
+        s.node('skill_exp', '经验获取\n(+EXP)', shape='hexagon',
+               style='filled', fillcolor='#81C784', fontsize='11')
+
+        s.node('skill_tree', '技能树\n(学科/软技能)', shape='box',
+               style='filled', fillcolor='#4DB6AC', fontsize='11')
+        s.node('skill_level', '等级提升\n(Level Up)', shape='box',
+               style='filled', fillcolor='#4DB6AC', fontsize='11')
+        s.node('skill_achievement', '成就解锁\n(里程碑)', shape='note',
+               style='filled', fillcolor='#FFD54F', fontsize='11')
+
+        s.edge('skill_exp', 'skill_tree', style='dashed')
+        s.edge('skill_tree', 'skill_level', style='dashed')
+        s.edge('skill_level', 'skill_achievement', style='dashed')
+
+    # === 第 5 层：攻守对抗 ===
+    with dot.subgraph(name='cluster_combat') as s:
+        s.attr(label='⚔️ 攻守对抗', style='filled', fillcolor='#FFCDD2', fontsize='14', penwidth='2')
+
+        # 攻击方
+        with s.subgraph(name='cluster_attacker_flow') as att:
+            att.attr(label='🔴 攻击方', style='filled', fillcolor='#FFEBEE', fontsize='12')
+            att.node('atk_noise', '噪声攻击\n(模糊/遮挡)', shape='box',
+                    style='filled,rounded', fillcolor='#EF5350', fontsize='10', fontcolor='white')
+            att.node('atk_logic', '逻辑攻击\n(矛盾/陷阱)', shape='box',
+                    style='filled,rounded', fillcolor='#EF5350', fontsize='10', fontcolor='white')
+            att.edge('atk_noise', 'atk_logic', style='dotted', color='#C62828')
+
+        # 防守方
+        with s.subgraph(name='cluster_defender_flow') as dfn:
+            dfn.attr(label='🔵 防守方', style='filled', fillcolor='#E3F2FD', fontsize='12')
+            dfn.node('def_detect', '攻击检测\n(异常识别)', shape='box',
+                    style='filled,rounded', fillcolor='#42A5F5', fontsize='10', fontcolor='white')
+            dfn.node('def_mitigate', '缓解策略\n(去噪/修复)', shape='box',
+                    style='filled,rounded', fillcolor='#42A5F5', fontsize='10', fontcolor='white')
+            dfn.edge('def_detect', 'def_mitigate', style='dotted', color='#1565C0')
+
+        # 攻守连接
+        s.edge('atk_logic', 'def_detect', penwidth='2', color='#F44336')
+
+    # === 跨层连接 ===
+    # 阶段 → 事件
+    dot.edge('middle', 'event_trigger', penwidth='2', color='#1976D2', constraint='false')
+
+    # 事件 → 选择
+    dot.edge('event_learn', 'choice_branch', penwidth='2', color='#FF9800')
+    dot.edge('event_challenge', 'choice_branch', penwidth='2', color='#F44336')
+    dot.edge('event_opportunity', 'choice_branch', penwidth='2', color='#2196F3')
+
+    # 选择 → 技能
+    dot.edge('choice_a', 'skill_exp', penwidth='2', color='#4CAF50')
+    dot.edge('choice_b', 'skill_exp', penwidth='2', color='#F44336')
+    dot.edge('choice_c', 'skill_exp', penwidth='2', color='#2196F3')
+
+    # 技能 → 攻守
+    dot.edge('skill_tree', 'atk_noise', penwidth='1.5', color='#EF5350',
+             style='dashed', label='技能依赖')
+    dot.edge('skill_level', 'def_detect', penwidth='1.5', color='#42A5F5',
+             style='dashed', label='等级增益')
+
+    # 攻守 → 下一阶段 (反馈)
+    dot.edge('def_mitigate', 'primary', penwidth='1.5', color='#9E9E9E',
+             style='dotted', label='防御成功→推进', constraint='false')
+    dot.edge('atk_logic', 'primary', penwidth='1.5', color='#F44336',
+             style='dotted', label='攻击成功→阻碍', constraint='false')
+
+    # 成就解锁反馈
+    dot.edge('skill_achievement', 'kindergarten', penwidth='2', color='#FFD54F',
+             style='dashed', label='成就解锁新路径', constraint='false')
+
+    filepath = dot.render('docs/sandbox_flow_v2', cleanup=True)
+    print(f"✅ 人生沙盒核心流程图 v2 已生成：{filepath}")
+    return filepath
+
+
 if __name__ == '__main__':
     generate_sandbox_architecture()
     generate_attack_defense_flow()
     generate_trajectory_pipeline()
     generate_life_decision_tree()
+    generate_sandbox_flow_v2()
     print("\n✅ 所有人生沙盒架构图已生成到 docs/ 目录")
