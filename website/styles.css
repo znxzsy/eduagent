@@ -334,6 +334,35 @@ body {
     background: white;
 }
 
+/* 沙盒 Hero 图 (全宽) */
+.sandbox-flow-hero {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.sandbox-flow-hero h3 {
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+}
+
+.sandbox-flow-hero img {
+    width: 100%;
+    max-width: 1200px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.flow-desc {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
 .architecture-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
