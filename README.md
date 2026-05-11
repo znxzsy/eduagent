@@ -13,7 +13,7 @@
 
 ## 📸 系统架构
 
-### 架构图
+### 核心架构图
 
 ![系统架构](docs/architecture.png)
 
@@ -21,9 +21,45 @@
 
 ![数据流](docs/data_flow.png)
 
-### 人生沙盒
+---
 
-![人生沙盒](docs/sandbox_flow.png)
+## 🎮 人生沙盒架构
+
+### 核心流程图
+
+![人生沙盒核心流程](docs/sandbox_flow.png)
+
+**事件驱动 × 选择分支 × 技能成长 × 攻守对抗** —— 模拟人做决策的一生
+
+- **5 层结构**：人生阶段 → 事件系统 → 选择分支 → 技能成长 → 攻守对抗
+- **事件类型**：学习事件、挑战事件、机遇事件、随机事件
+- **决策分支**：保守路线、冒险路线、平衡路线
+- **技能系统**：EXP 获取 → 技能树 → 等级提升 → 成就解锁
+- **攻守对抗**：攻击方 (噪声/逻辑) ↔ 防守方 (检测/缓解)
+
+### 完整架构图
+
+![沙盒完整架构](docs/sandbox_architecture.png)
+
+**7 层架构**：用户输入 → 仿真环境 → 攻击模块 → 防御模块 → 轨迹生成 → 评估优化 → 数据输出
+
+### 攻守对抗流程
+
+![攻守对抗](docs/attack_defense_flow.png)
+
+攻击方 (噪声注入/对抗扰动/逻辑攻击) → 防守方 (检测/过滤/验证/降级) → 评估反馈迭代
+
+### 轨迹数据流水线
+
+![轨迹流水线](docs/trajectory_pipeline.png)
+
+数据采集 → 轨迹编码 (SAR) → 质量评估 → 数据存储 (训练/验证/测试) → 批改优化
+
+### 人生决策树
+
+![人生决策树](docs/life_decision_tree.png)
+
+7 个人生阶段完整决策路径，含攻击点 ⚠️ 与防守点 🛡️ 标记
 
 ---
 
@@ -289,10 +325,15 @@ Subject.CHEMISTRY: [
 
 ```bash
 cd edu_agent
-python3 generate_diagrams.py
+python3 generate_sandbox_diagrams.py
 ```
 
-生成的架构图保存在 `docs/` 目录下。
+生成的架构图保存在 `docs/` 目录下：
+- `sandbox_architecture.png` - 沙盒完整架构图 (7 层)
+- `sandbox_flow.png` - 人生沙盒核心流程图
+- `attack_defense_flow.png` - 攻守对抗流程
+- `trajectory_pipeline.png` - 轨迹数据流水线
+- `life_decision_tree.png` - 人生决策树
 
 ---
 
