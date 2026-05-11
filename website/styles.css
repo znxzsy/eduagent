@@ -402,6 +402,56 @@ body {
     font-size: 0.9rem;
 }
 
+/* 沙盒架构 */
+.sandbox {
+    padding: 100px 0;
+    background: var(--light);
+}
+
+.section-desc {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.sandbox-diagrams {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.diagram-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #eee;
+}
+
+.diagram-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.diagram-card h3 {
+    color: var(--dark);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.diagram-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.diagram-card p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
 /* 关于区域 */
 .about {
     padding: 100px 0;
@@ -503,6 +553,9 @@ body {
     .hero h2 { font-size: 1.5rem; }
     .hero-stats { gap: 1.5rem; }
     .demo-container, .architecture-content, .about-content {
+        grid-template-columns: 1fr;
+    }
+    .sandbox-diagrams {
         grid-template-columns: 1fr;
     }
     .nav-links {

@@ -15,6 +15,7 @@
             <ul class="nav-links">
                 <li><a href="#home">首页</a></li>
                 <li><a href="#features">功能</a></li>
+                <li><a href="#sandbox">沙盒</a></li>
                 <li><a href="#demo">演示</a></li>
                 <li><a href="#architecture">架构</a></li>
                 <li><a href="#about">关于</a></li>
@@ -161,6 +162,36 @@
                         <code>cd eduagent</code>
                         <code>python3 main.py</code>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 沙盒架构 -->
+    <section id="sandbox" class="sandbox">
+        <div class="container">
+            <h2 class="section-title">人生学习沙盒架构</h2>
+            <p class="section-desc" style="text-align:center;color:var(--text-light);margin-bottom:3rem;max-width:800px;margin-left:auto;margin-right:auto;">仿真环境 + 攻击/防守 + 轨迹生成 + 评估优化的完整闭环系统</p>
+            <div class="sandbox-diagrams">
+                <div class="diagram-card">
+                    <h3>🏗️ 完整架构图</h3>
+                    <img src="docs/sandbox_architecture.png" alt="沙盒架构图" onerror="this.src='docs/architecture.png'">
+                    <p>7 层架构：用户输入 → 仿真环境 → 攻击模块 → 防御模块 → 轨迹生成 → 评估优化 → 数据输出</p>
+                </div>
+                <div class="diagram-card">
+                    <h3>⚔️ 攻守对抗流程</h3>
+                    <img src="docs/attack_defense_flow.png" alt="攻守对抗流程" onerror="this.src='docs/architecture.png'">
+                    <p>攻击方 (噪声/逻辑/对抗扰动) → 防守方 (检测/分析/缓解/验证) → 评估反馈迭代</p>
+                </div>
+                <div class="diagram-card">
+                    <h3>📊 轨迹流水线</h3>
+                    <img src="docs/trajectory_pipeline.png" alt="轨迹流水线" onerror="this.src='docs/architecture.png'">
+                    <p>数据采集 → 轨迹编码 (SAR) → 质量评估 → 数据存储 → 批改优化</p>
+                </div>
+                <div class="diagram-card">
+                    <h3>🌳 人生决策树</h3>
+                    <img src="docs/life_decision_tree.png" alt="人生决策树" onerror="this.src='docs/architecture.png'">
+                    <p>7 个人生阶段完整决策路径，含攻击点 ⚠️ 与防守点 🛡️ 标记</p>
                 </div>
             </div>
         </div>

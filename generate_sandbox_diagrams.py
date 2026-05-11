@@ -1,0 +1,395 @@
+"""人生沙盒架构图生成器 - 专业版"""
+import os
+from graphviz import Digraph
+
+os.makedirs('docs', exist_ok=True)
+
+# ============================================================
+# 图 1: 人生沙盒完整架构图
+# ============================================================
+def generate_sandbox_architecture():
+    dot = Digraph('Sandbox Architecture', format='png', engine='dot')
+    dot.attr(
+        rankdir='TB',
+        size='20,16',
+        dpi='300',
+        bgcolor='transparent',
+        fontname='Arial',
+        label='''人生学习沙盒 v2.0 - 完整架构
+仿真环境 + 攻击/防守 + 轨迹生成 + 评估优化''',
+        labelloc='t',
+        fontsize='20',
+    )
+
+    # 颜色方案
+    colors = {
+        'env': '#E8F4F8',      # 仿真环境
+        'agent': '#E8F8E8',    # 智能体
+        'attack': '#F8E8E8',   # 攻击
+        'defense': '#E8E8F8',  # 防御
+        'trajectory': '#F8F0E8', # 轨迹
+        'eval': '#F0E8F8',     # 评估
+        'data': '#FFF8E8',     # 数据
+    }
+
+    # === 第 1 层：用户输入 ===
+    with dot.subgraph(name='cluster_input') as s:
+        s.attr(label='用户输入层', style='filled', fillcolor='#FFF5F5', fontsize='14')
+        s.node('user_profile', '用户画像\n(年龄/阶段/偏好)', shape='box', style='filled,rounded', fillcolor='#FFB6C1')
+        s.node('skill_config', '技能配置\n(初始技能树)', shape='box', style='filled,rounded', fillcolor='#FFB6C1')
+        s.node('env_config', '环境配置\n(难度/随机种子)', shape='box', style='filled,rounded', fillcolor='#FFB6C1')
+
+    # === 第 2 层：仿真环境 ===
+    with dot.subgraph(name='cluster_simulation') as s:
+        s.attr(label='仿真环境层', style='filled', fillcolor=colors['env'], fontsize='14')
+
+        s.node('stage_engine', '阶段引擎\n(7 人生阶段)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
+        s.node('event_generator', '事件生成器\n(随机/ scripted)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
+        s.node('choice_system', '选择系统\n(分支决策)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
+        s.node('skill_tracker', '技能追踪器\n(EXP/Level)', shape='box', style='filled,rounded', fillcolor='#4ECDC4')
+
+    # === 第 3 层：攻击模块 ===
+    with dot.subgraph(name='cluster_attack') as s:
+        s.attr(label='攻击模块 (Adversarial)', style='filled', fillcolor=colors['attack'], fontsize='14')
+
+        s.node('attack_gen', '攻击生成器', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
+        s.node('noise_inject', '噪声注入\n(模糊/涂抹/遮挡)', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
+        s.node('adv_perturb', '对抗扰动\n(FGSM/PGD)', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
+        s.node('logic_attack', '逻辑攻击\n(矛盾/陷阱)', shape='box', style='filled,rounded', fillcolor='#FF6B6B', fontcolor='white')
+
+    # === 第 4 层：防御模块 ===
+    with dot.subgraph(name='cluster_defense') as s:
+        s.attr(label='防御模块 (Robustness)', style='filled', fillcolor=colors['defense'], fontsize='14')
+
+        s.node('defense_detect', '攻击检测\n(异常识别)', shape='box', style='filled,rounded', fillcolor='#4169E1', fontcolor='white')
+        s.node('defense_filter', '输入过滤\n(去噪/修复)', shape='box', style='filled,rounded', fillcolor='#4169E1', fontcolor='white')
+        s.node('defense_verify', '一致性验证\n(多模型交叉)', shape='box', style='filled,rounded', fillcolor='#4169E1', fontcolor='white')
+        s.node('defense_fallback', '降级策略\n(规则回退)', shape='box', style='filled,rounded', fillcolor='#4169E1', fontcolor='white')
+
+    # === 第 5 层：轨迹生成 ===
+    with dot.subgraph(name='cluster_trajectory') as s:
+        s.attr(label='轨迹生成层', style='filled', fillcolor=colors['trajectory'], fontsize='14')
+
+        s.node('traj_collector', '轨迹收集器', shape='box', style='filled,rounded', fillcolor='#FFA500')
+        s.node('traj_encoder', '轨迹编码器\n(State-Action-Reward)', shape='box', style='filled,rounded', fillcolor='#FFA500')
+        s.node('traj_storage', '轨迹存储\n(JSON/Parquet)', shape='cylinder', style='filled', fillcolor='#FFA500')
+        s.node('traj_augment', '轨迹增强\n(采样/插值)', shape='box', style='filled,rounded', fillcolor='#FFA500')
+
+    # === 第 6 层：评估优化 ===
+    with dot.subgraph(name='cluster_eval') as s:
+        s.attr(label='评估优化层', style='filled', fillcolor=colors['eval'], fontsize='14')
+
+        s.node('eval_correctness', '正确性评估\n(Gold Standard)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('eval_consistency', '一致性评估\n(自洽性检查)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('eval_robustness', '鲁棒性评估\n(攻击成功率)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('optimizer', '优化器\n(RL/梯度更新)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+
+    # === 第 7 层：数据输出 ===
+    with dot.subgraph(name='cluster_output') as s:
+        s.attr(label='数据输出层', style='filled', fillcolor=colors['data'], fontsize='14')
+
+        s.node('dataset', '轨迹数据集\n(labeled_trajectories)', shape='cylinder', style='filled', fillcolor='#FFD700')
+        s.node('metrics', '评估指标\n(Acc/Robust/F1)', shape='box', style='filled,rounded', fillcolor='#FFD700')
+        s.node('report', '分析报告\n(可视化/统计)', shape='note', style='filled', fillcolor='#FFD700')
+
+    # 连接关系
+    # 输入 → 仿真
+    dot.edge('user_profile', 'stage_engine')
+    dot.edge('skill_config', 'skill_tracker')
+    dot.edge('env_config', 'event_generator')
+
+    # 仿真内部
+    dot.edge('stage_engine', 'event_generator', style='dashed')
+    dot.edge('event_generator', 'choice_system', style='dashed')
+    dot.edge('choice_system', 'skill_tracker', style='dashed')
+
+    # 仿真 → 攻击
+    dot.edge('choice_system', 'attack_gen', color='#FF6B6B80')
+
+    # 攻击内部
+    dot.edge('attack_gen', 'noise_inject', style='dashed', color='#FF6B6B80')
+    dot.edge('attack_gen', 'adv_perturb', style='dashed', color='#FF6B6B80')
+    dot.edge('attack_gen', 'logic_attack', style='dashed', color='#FF6B6B80')
+
+    # 攻击 → 防御
+    dot.edge('noise_inject', 'defense_detect', color='#4169E180')
+    dot.edge('adv_perturb', 'defense_detect', color='#4169E180')
+    dot.edge('logic_attack', 'defense_verify', color='#4169E180')
+
+    # 防御内部
+    dot.edge('defense_detect', 'defense_filter', style='dashed', color='#4169E180')
+    dot.edge('defense_filter', 'defense_fallback', style='dashed', color='#4169E180')
+
+    # 防御 → 轨迹
+    dot.edge('defense_filter', 'traj_collector', color='#FFA50080')
+    dot.edge('skill_tracker', 'traj_collector', color='#FFA50080')
+
+    # 轨迹内部
+    dot.edge('traj_collector', 'traj_encoder', style='dashed', color='#FFA50080')
+    dot.edge('traj_encoder', 'traj_storage', style='dashed', color='#FFA50080')
+    dot.edge('traj_storage', 'traj_augment', style='dashed', color='#FFA50080')
+
+    # 轨迹 → 评估
+    dot.edge('traj_storage', 'eval_correctness', color='#9370DB80')
+    dot.edge('traj_storage', 'eval_consistency', color='#9370DB80')
+    dot.edge('traj_storage', 'eval_robustness', color='#9370DB80')
+
+    # 评估内部
+    dot.edge('eval_correctness', 'optimizer', style='dashed', color='#9370DB80')
+    dot.edge('eval_consistency', 'optimizer', style='dashed', color='#9370DB80')
+    dot.edge('eval_robustness', 'optimizer', style='dashed', color='#9370DB80')
+
+    # 评估 → 输出
+    dot.edge('eval_correctness', 'dataset', color='#FFD70080')
+    dot.edge('eval_robustness', 'metrics', color='#FFD70080')
+    dot.edge('optimizer', 'report', color='#FFD70080')
+
+    # 反馈循环
+    dot.edge('optimizer', 'defense_filter', constraint='false', style='dotted', color='#9370DB80')
+    dot.edge('metrics', 'event_generator', constraint='false', style='dotted', color='#FFD70080')
+
+    filepath = dot.render('docs/sandbox_architecture', cleanup=True)
+    print(f"✅ 沙盒架构图已生成：{filepath}")
+    return filepath
+
+
+# ============================================================
+# 图 2: 攻击 - 防守对抗流程
+# ============================================================
+def generate_attack_defense_flow():
+    dot = Digraph('Attack-Defense Flow', format='png', engine='dot')
+    dot.attr(
+        rankdir='LR',
+        size='18,10',
+        dpi='300',
+        bgcolor='transparent',
+        fontname='Arial',
+        label='攻击 - 防守对抗流程',
+        labelloc='t',
+        fontsize='18',
+    )
+
+    # 攻击方
+    with dot.subgraph(name='cluster_attacker') as s:
+        s.attr(label=' 攻击方 (Adversary)', style='filled', fillcolor='#FFE0E0', fontsize='14')
+        s.node('adv_input', '对抗输入\n(手写扰动)', shape='box', style='filled,rounded', fillcolor='#FF4444', fontcolor='white')
+        s.node('adv_noise', '噪声层\n(高斯/椒盐)', shape='box', style='filled,rounded', fillcolor='#FF4444', fontcolor='white')
+        s.node('adv_logic', '逻辑陷阱\n(矛盾陈述)', shape='box', style='filled,rounded', fillcolor='#FF4444', fontcolor='white')
+        s.node('adv_combine', '攻击融合', shape='diamond', style='filled', fillcolor='#FF4444', fontcolor='white')
+
+    # 防守方
+    with dot.subgraph(name='cluster_defender') as s:
+        s.attr(label='🔵 防守方 (Defender)', style='filled', fillcolor='#E0E0FF', fontsize='14')
+        s.node('def_detect', '异常检测\n(置信度阈值)', shape='box', style='filled,rounded', fillcolor='#4444FF', fontcolor='white')
+        s.node('def_analyze', '攻击分析\n(类型识别)', shape='box', style='filled,rounded', fillcolor='#4444FF', fontcolor='white')
+        s.node('def_mitigate', '缓解策略\n(去噪/修复)', shape='box', style='filled,rounded', fillcolor='#4444FF', fontcolor='white')
+        s.node('def_verify', '结果验证\n(一致性检查)', shape='box', style='filled,rounded', fillcolor='#4444FF', fontcolor='white')
+
+    # 评估
+    with dot.subgraph(name='cluster_eval_flow') as s:
+        s.attr(label='📊 评估模块', style='filled', fillcolor='#E0FFE0', fontsize='14')
+        s.node('eval_asr', '攻击成功率\n(ASR)', shape='box', style='filled,rounded', fillcolor='#44AA44', fontcolor='white')
+        s.node('eval_robust', '鲁棒性分数', shape='box', style='filled,rounded', fillcolor='#44AA44', fontcolor='white')
+        s.node('eval_feedback', '反馈优化', shape='hexagon', style='filled', fillcolor='#44AA44', fontcolor='white')
+
+    # 流程连接
+    dot.edge('adv_input', 'adv_noise')
+    dot.edge('adv_noise', 'adv_logic')
+    dot.edge('adv_logic', 'adv_combine')
+
+    dot.edge('adv_combine', 'def_detect', penwidth='3', color='#FF0000')
+
+    dot.edge('def_detect', 'def_analyze')
+    dot.edge('def_analyze', 'def_mitigate')
+    dot.edge('def_mitigate', 'def_verify')
+
+    dot.edge('def_verify', 'eval_asr')
+    dot.edge('def_verify', 'eval_robust')
+
+    dot.edge('eval_asr', 'eval_feedback', style='dashed')
+    dot.edge('eval_robust', 'eval_feedback', style='dashed')
+
+    # 反馈循环
+    dot.edge('eval_feedback', 'adv_input', constraint='false', style='dotted', label='迭代优化')
+    dot.edge('eval_feedback', 'def_detect', constraint='false', style='dotted', label='策略更新')
+
+    filepath = dot.render('docs/attack_defense_flow', cleanup=True)
+    print(f"✅ 攻守对抗流程图已生成：{filepath}")
+    return filepath
+
+
+# ============================================================
+# 图 3: 轨迹数据生成与评估
+# ============================================================
+def generate_trajectory_pipeline():
+    dot = Digraph('Trajectory Pipeline', format='png', engine='dot')
+    dot.attr(
+        rankdir='TB',
+        size='16,20',
+        dpi='300',
+        bgcolor='transparent',
+        fontname='Arial',
+        label='轨迹数据生成与评估流水线',
+        labelloc='t',
+        fontsize='18',
+    )
+
+    # 阶段 1: 数据采集
+    with dot.subgraph(name='cluster_collect') as s:
+        s.attr(label='📥 数据采集', style='filled', fillcolor='#FFF0E0', fontsize='14')
+        s.node('raw_events', '原始事件\n(决策点)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
+        s.node('raw_states', '状态序列\n(S₁,S₂,...,Sn)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
+        s.node('raw_actions', '动作序列\n(A₁,A₂,...,An)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
+        s.node('raw_rewards', '奖励信号\n(R₁,R₂,...,Rn)', shape='box', style='filled,rounded', fillcolor='#FFA07A')
+
+    # 阶段 2: 轨迹编码
+    with dot.subgraph(name='cluster_encode') as s:
+        s.attr(label='📐 轨迹编码', style='filled', fillcolor='#E0FFF0', fontsize='14')
+        s.node('encode_sar', 'SAR 编码\n(State-Action-Reward)', shape='box', style='filled,rounded', fillcolor='#66CDAA')
+        s.node('encode_feature', '特征提取\n(决策特征)', shape='box', style='filled,rounded', fillcolor='#66CDAA')
+        s.node('encode_label', '标签生成\n(正确/错误)', shape='box', style='filled,rounded', fillcolor='#66CDAA')
+
+    # 阶段 3: 质量评估
+    with dot.subgraph(name='cluster_quality') as s:
+        s.attr(label='🔍 质量评估', style='filled', fillcolor='#E0E0FF', fontsize='14')
+        s.node('quality_complete', '完整性检查', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('quality_correct', '正确性验证\n(Gold Label)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('quality_diverse', '多样性评估\n(覆盖率)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('quality_filter', '质量过滤', shape='diamond', style='filled', fillcolor='#9370DB')
+
+    # 阶段 4: 数据存储
+    with dot.subgraph(name='cluster_store') as s:
+        s.attr(label='💾 数据存储', style='filled', fillcolor='#FFF8E0', fontsize='14')
+        s.node('store_train', '训练集\n(80%)', shape='cylinder', style='filled', fillcolor='#FFD700')
+        s.node('store_val', '验证集\n(10%)', shape='cylinder', style='filled', fillcolor='#FFD700')
+        s.node('store_test', '测试集\n(10%)', shape='cylinder', style='filled', fillcolor='#FFD700')
+
+    # 阶段 5: 批改优化
+    with dot.subgraph(name='cluster_optimize') as s:
+        s.attr(label='⚙️ 批改优化', style='filled', fillcolor='#FFE0F0', fontsize='14')
+        s.node('opt_model', '批改模型\n(Grader)', shape='box', style='filled,rounded', fillcolor='#DB7093')
+        s.node('opt_train', '模型训练\n(CrossEntropy)', shape='box', style='filled,rounded', fillcolor='#DB7093')
+        s.node('opt_eval', '性能评估\n(Acc/F1/AUC)', shape='box', style='filled,rounded', fillcolor='#DB7093')
+        s.node('opt_deploy', '部署更新', shape='hexagon', style='filled', fillcolor='#DB7093')
+
+    # 连接
+    dot.edge('raw_events', 'encode_sar')
+    dot.edge('raw_states', 'encode_sar')
+    dot.edge('raw_actions', 'encode_sar')
+    dot.edge('raw_rewards', 'encode_sar')
+
+    dot.edge('encode_sar', 'encode_feature')
+    dot.edge('encode_feature', 'encode_label')
+
+    dot.edge('encode_label', 'quality_complete')
+    dot.edge('encode_label', 'quality_correct')
+    dot.edge('encode_label', 'quality_diverse')
+
+    dot.edge('quality_complete', 'quality_filter')
+    dot.edge('quality_correct', 'quality_filter')
+    dot.edge('quality_diverse', 'quality_filter')
+
+    dot.edge('quality_filter', 'store_train')
+    dot.edge('quality_filter', 'store_val')
+    dot.edge('quality_filter', 'store_test')
+
+    dot.edge('store_train', 'opt_model')
+    dot.edge('store_val', 'opt_train')
+    dot.edge('store_test', 'opt_eval')
+
+    dot.edge('opt_eval', 'opt_deploy')
+    dot.edge('opt_deploy', 'opt_model', constraint='false', style='dashed', label='模型更新')
+
+    filepath = dot.render('docs/trajectory_pipeline', cleanup=True)
+    print(f"✅ 轨迹流水线图已生成：{filepath}")
+    return filepath
+
+
+# ============================================================
+# 图 4: 人生阶段决策树
+# ============================================================
+def generate_life_decision_tree():
+    dot = Digraph('Life Decision Tree', format='png', engine='dot')
+    dot.attr(
+        rankdir='TB',
+        size='20,24',
+        dpi='300',
+        bgcolor='transparent',
+        fontname='Arial',
+        label='人生阶段决策树 - 完整仿真路径',
+        labelloc='t',
+        fontsize='20',
+    )
+
+    # 阶段颜色
+    stage_colors = {
+        '幼儿园': '#FFB6C1',
+        '小学': '#98FB98',
+        '初中': '#87CEEB',
+        '高中': '#DDA0DD',
+        '大学': '#FFA07A',
+        '职业': '#F0E68C',
+        '退休': '#B0C4DE',
+    }
+
+    # 创建各阶段节点
+    stages = ['幼儿园', '小学', '初中', '高中', '大学', '职业', '退休']
+
+    for i, stage in enumerate(stages):
+        with dot.subgraph(name=f'cluster_{stage}') as s:
+            s.attr(label=f'{stage}阶段', style='filled', fillcolor=f'{stage_colors[stage]}40', fontsize='14')
+
+            # 阶段入口
+            s.node(f'{stage}_entry', f'{stage}\n(入口)', shape='doublecircle', style='filled', fillcolor=stage_colors[stage])
+
+            # 事件节点
+            if i < 6:  # 退休没有后续
+                s.node(f'{stage}_event1', '事件 A\n(学习/成长)', shape='box', style='filled,rounded', fillcolor=stage_colors[stage])
+                s.node(f'{stage}_event2', '事件 B\n(挑战/机遇)', shape='box', style='filled,rounded', fillcolor=stage_colors[stage])
+
+                # 决策分支
+                s.node(f'{stage}_choice1', '选择 1', shape='diamond', style='filled', fillcolor='#FFFFFF')
+                s.node(f'{stage}_choice2', '选择 2', shape='diamond', style='filled', fillcolor='#FFFFFF')
+                s.node(f'{stage}_choice3', '选择 3', shape='diamond', style='filled', fillcolor='#FFFFFF')
+
+                # 技能获取
+                s.node(f'{stage}_skill', '技能获取\n(+EXP)', shape='hexagon', style='filled', fillcolor='#90EE90')
+
+                # 内部连接
+                s.edge(f'{stage}_entry', f'{stage}_event1')
+                s.edge(f'{stage}_entry', f'{stage}_event2')
+                s.edge(f'{stage}_event1', f'{stage}_choice1')
+                s.edge(f'{stage}_event1', f'{stage}_choice2')
+                s.edge(f'{stage}_event2', f'{stage}_choice2')
+                s.edge(f'{stage}_event2', f'{stage}_choice3')
+                s.edge(f'{stage}_choice1', f'{stage}_skill')
+                s.edge(f'{stage}_choice2', f'{stage}_skill')
+                s.edge(f'{stage}_choice3', f'{stage}_skill')
+
+    # 阶段间连接
+    for i in range(len(stages) - 1):
+        current = stages[i]
+        next_stage = stages[i + 1]
+        dot.edge(f'{current}_skill', f'{next_stage}_entry', penwidth='2', color='#666666', label=f'→ {next_stage}')
+
+    # 攻击点标记
+    for stage in stages[:5]:
+        dot.node(f'{stage}_attack', '⚠️ 攻击点', shape='triangle', style='filled', fillcolor='#FF6B6B', fontcolor='white')
+        dot.edge(f'{stage}_choice1', f'{stage}_attack', style='dashed', color='#FF0000')
+
+    # 防守点标记
+    for stage in stages[:5]:
+        dot.node(f'{stage}_defense', '🛡️ 防守点', shape='invtriangle', style='filled', fillcolor='#4169E1', fontcolor='white')
+        dot.edge(f'{stage}_attack', f'{stage}_defense', style='dotted', color='#0000FF')
+
+    filepath = dot.render('docs/life_decision_tree', cleanup=True)
+    print(f"✅ 人生决策树已生成：{filepath}")
+    return filepath
+
+
+if __name__ == '__main__':
+    generate_sandbox_architecture()
+    generate_attack_defense_flow()
+    generate_trajectory_pipeline()
+    generate_life_decision_tree()
+    print("\n✅ 所有人生沙盒架构图已生成到 docs/ 目录")
