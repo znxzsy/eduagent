@@ -79,9 +79,12 @@ def generate_sandbox_architecture():
     with dot.subgraph(name='cluster_eval') as s:
         s.attr(label='评估优化层', style='filled', fillcolor=colors['eval'], fontsize='14')
 
-        s.node('eval_correctness', '正确性评估\n(Gold Standard)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('eval_luck', '🎲 运气因子\n(~10% 概率)', shape='box', style='filled,rounded', fillcolor='#FFB6C1', fontsize='11')
+        s.node('eval_knowledge', '知识点匹配评估\n(掌握度 vs 题目)', shape='box', style='filled,rounded', fillcolor='#9370DB', fontsize='11')
+        s.node('eval_variant', '变形式验证\n(防背题检测)', shape='box', style='filled,rounded', fillcolor='#9370DB', fontsize='11')
         s.node('eval_consistency', '一致性评估\n(自洽性检查)', shape='box', style='filled,rounded', fillcolor='#9370DB')
         s.node('eval_robustness', '鲁棒性评估\n(攻击成功率)', shape='box', style='filled,rounded', fillcolor='#9370DB')
+        s.node('knowledge_trace', '📊 知识追踪\n(IRT/BKT 模型)', shape='hexagon', style='filled', fillcolor='#BA68C8', fontsize='11')
         s.node('optimizer', '优化器\n(RL/梯度更新)', shape='box', style='filled,rounded', fillcolor='#9370DB')
 
     # === 第 7 层：数据输出 ===
@@ -130,17 +133,23 @@ def generate_sandbox_architecture():
     dot.edge('traj_storage', 'traj_augment', style='dashed', color='#FFA50080')
 
     # 轨迹 → 评估
-    dot.edge('traj_storage', 'eval_correctness', color='#9370DB80')
+    dot.edge('traj_storage', 'eval_knowledge', color='#9370DB80')
+    dot.edge('traj_storage', 'eval_variant', color='#9370DB80')
     dot.edge('traj_storage', 'eval_consistency', color='#9370DB80')
     dot.edge('traj_storage', 'eval_robustness', color='#9370DB80')
 
+    # 运气因子影响评估
+    dot.edge('eval_luck', 'eval_knowledge', style='dotted', color='#FFB6C180', label='10% 概率')
+
     # 评估内部
-    dot.edge('eval_correctness', 'optimizer', style='dashed', color='#9370DB80')
+    dot.edge('eval_knowledge', 'knowledge_trace', style='dashed', color='#9370DB80')
+    dot.edge('eval_variant', 'knowledge_trace', style='dashed', color='#9370DB80')
+    dot.edge('knowledge_trace', 'optimizer', style='dashed', color='#BA68C880')
     dot.edge('eval_consistency', 'optimizer', style='dashed', color='#9370DB80')
     dot.edge('eval_robustness', 'optimizer', style='dashed', color='#9370DB80')
 
     # 评估 → 输出
-    dot.edge('eval_correctness', 'dataset', color='#FFD70080')
+    dot.edge('knowledge_trace', 'dataset', color='#FFD70080')
     dot.edge('eval_robustness', 'metrics', color='#FFD70080')
     dot.edge('optimizer', 'report', color='#FFD70080')
 
@@ -252,17 +261,26 @@ def generate_trajectory_pipeline():
     # 阶段 3: 质量评估
     with dot.subgraph(name='cluster_quality') as s:
         s.attr(label='🔍 质量评估', style='filled', fillcolor='#E0E0FF', fontsize='14')
-        s.node('quality_complete', '完整性检查', shape='box', style='filled,rounded', fillcolor='#9370DB')
-        s.node('quality_correct', '正确性验证\n(Gold Label)', shape='box', style='filled,rounded', fillcolor='#9370DB')
-        s.node('quality_diverse', '多样性评估\n(覆盖率)', shape='box', style='filled,rounded', fillcolor='#9370DB')
-        s.node('quality_filter', '质量过滤', shape='diamond', style='filled', fillcolor='#9370DB')
+
+        s.node('quality_luck', '🎲 运气因子\n(~10% 概率)', shape='box', style='filled,rounded',
+               fillcolor='#FFB6C1', fontsize='10')
+        s.node('quality_knowledge', '知识点匹配评估\n(掌握度 vs 题目)', shape='box',
+               style='filled,rounded', fillcolor='#9370DB', fontsize='10')
+        s.node('quality_variant', '变形式验证\n(防背题检测)', shape='box',
+               style='filled,rounded', fillcolor='#9370DB', fontsize='10')
+        s.node('quality_filter', '质量过滤\n(真理解/假理解)', shape='diamond',
+               style='filled', fillcolor='#9370DB', fontsize='10')
+
+        s.edge('quality_luck', 'quality_knowledge', style='dotted', color='#FF69B480')
+        s.edge('quality_knowledge', 'quality_filter')
+        s.edge('quality_variant', 'quality_filter')
 
     # 阶段 4: 数据存储
     with dot.subgraph(name='cluster_store') as s:
-        s.attr(label='💾 数据存储', style='filled', fillcolor='#FFF8E0', fontsize='14')
+        s.attr(label='💾 数据存储 + 知识追踪', style='filled', fillcolor='#FFF8E0', fontsize='14')
         s.node('store_train', '训练集\n(80%)', shape='cylinder', style='filled', fillcolor='#FFD700')
-        s.node('store_val', '验证集\n(10%)', shape='cylinder', style='filled', fillcolor='#FFD700')
-        s.node('store_test', '测试集\n(10%)', shape='cylinder', style='filled', fillcolor='#FFD700')
+        s.node('store_knowledge', '知识追踪\n(IRT/BKT 模型)', shape='hexagon', style='filled', fillcolor='#BA68C8')
+        s.node('store_variant', '变式题库\n(同一知识点多题)', shape='cylinder', style='filled', fillcolor='#FFD700')
 
     # 阶段 5: 批改优化
     with dot.subgraph(name='cluster_optimize') as s:
@@ -281,21 +299,17 @@ def generate_trajectory_pipeline():
     dot.edge('encode_sar', 'encode_feature')
     dot.edge('encode_feature', 'encode_label')
 
-    dot.edge('encode_label', 'quality_complete')
-    dot.edge('encode_label', 'quality_correct')
-    dot.edge('encode_label', 'quality_diverse')
-
-    dot.edge('quality_complete', 'quality_filter')
-    dot.edge('quality_correct', 'quality_filter')
-    dot.edge('quality_diverse', 'quality_filter')
+    dot.edge('encode_label', 'quality_knowledge')
+    dot.edge('encode_label', 'quality_variant')
+    dot.edge('encode_label', 'quality_luck')
 
     dot.edge('quality_filter', 'store_train')
-    dot.edge('quality_filter', 'store_val')
-    dot.edge('quality_filter', 'store_test')
+    dot.edge('quality_filter', 'store_knowledge')
+    dot.edge('quality_filter', 'store_variant')
 
     dot.edge('store_train', 'opt_model')
-    dot.edge('store_val', 'opt_train')
-    dot.edge('store_test', 'opt_eval')
+    dot.edge('store_knowledge', 'opt_eval')
+    dot.edge('store_variant', 'opt_eval')
 
     dot.edge('opt_eval', 'opt_deploy')
     dot.edge('opt_deploy', 'opt_model', constraint='false', style='dashed', label='模型更新')
