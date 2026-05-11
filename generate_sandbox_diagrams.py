@@ -522,27 +522,22 @@ def generate_skill_tree_v2():
 # 图 5: 学习成长决策树 v2 (基于技能发展)
 # ============================================================
 def generate_life_decision_tree_v2():
-    """学习成长决策树 - 基于技能发展的真实路径"""
+    """学习成长决策树 - 基于技能发展的真实路径 - 简洁版"""
     dot = Digraph('Decision Tree v2', format='png', engine='dot')
     dot.attr(
         rankdir='TB',
-        size='18,20',
+        size='16,22',
         dpi='300',
         bgcolor='transparent',
         fontname='Arial',
         label='📚 学习成长决策树 v2.0\n基于技能发展的教育路径',
         labelloc='t',
-        fontsize='20',
+        fontsize='18',
+        fontcolor='#2C3E50',
     )
 
-    colors = {
-        'stage': '#E3F2FD',
-        'choice': '#FFF3E0',
-        'skill': '#E8F5E9',
-        'outcome': '#F3E5F5',
-    }
-
-    stages = [
+    # 简洁配色 - 每个阶段一个主色
+    stage_colors = [
         ('启蒙期', '3-6 岁', '语言/认知启蒙', '#FFCDD2'),
         ('基础期', '6-12 岁', '学科基础建立', '#C8E6C9'),
         ('发展期', '12-15 岁', '抽象思维发展', '#FFF9C4'),
@@ -551,64 +546,53 @@ def generate_life_decision_tree_v2():
         ('实践期', '22-60 岁', '职业发展/终身学习', '#D1C4E9'),
     ]
 
-    for i, (stage_name, age_range, focus, color) in enumerate(stages):
-        with dot.subgraph(name=f'cluster_stage_{i}') as s:
-            s.attr(label=f'{stage_name}', style='filled', fillcolor=colors['stage'],
-                   fontsize='13', penwidth='2')
+    # 主流程 - 简洁线性布局
+    prev_skill = None
+    for i, (stage_name, age_range, focus, color) in enumerate(stage_colors):
+        # 阶段节点
+        dot.node(f'stage_{i}', f'{stage_name}\n{age_range}\n{focus}',
+                 shape='box', style='filled,rounded', fillcolor=color,
+                 fontsize='12', penwidth='2', width='2.5')
 
-            # 阶段节点
-            s.node(f'stage_{i}', f'{stage_name}\n{age_range}\n重点：{focus}',
-                   shape='box', style='filled,rounded', fillcolor=color,
-                   fontsize='11', penwidth='2')
+        if prev_skill:
+            dot.edge(prev_skill, f'stage_{i}', penwidth='2.5', color='#546E7A')
 
-            # 关键决策点
-            if i < len(stages) - 1:
-                s.node(f'choice_{i}', '关键决策', shape='diamond',
-                       style='filled', fillcolor='#FFE0B2', fontsize='10')
+        # 决策分支（前 5 个阶段有）
+        if i < len(stage_colors) - 1:
+            # 决策点
+            dot.node(f'decision_{i}', '关键选择', shape='diamond',
+                     style='filled', fillcolor='#FFE0B2', penwidth='1.5')
+            dot.edge(f'stage_{i}', f'decision_{i}', penwidth='2')
 
-                next_stage = stages[i + 1]
-                s.node(f'path_a', '学术路线\n(深入学习)', shape='box',
-                       style='filled,rounded', fillcolor='#A5D6A7', fontsize='9')
-                s.node(f'path_b', '实践路线\n(应用探索)', shape='box',
-                       style='filled,rounded', fillcolor='#90CAF9', fontsize='9')
+            # 两条路径
+            dot.node(f'academic_{i}', '学术路线', shape='box',
+                     style='filled,rounded', fillcolor='#A5D6A7', fontsize='10')
+            dot.node(f'practical_{i}', '实践路线', shape='box',
+                     style='filled,rounded', fillcolor='#90CAF9', fontsize='10')
 
-                s.edge(f'stage_{i}', f'choice_{i}', penwidth='2')
-                s.edge(f'choice_{i}', 'path_a', penwidth='2', color='#2E7D32')
-                s.edge(f'choice_{i}', 'path_b', penwidth='2', color='#1565C0')
+            dot.edge(f'decision_{i}', f'academic_{i}', penwidth='2', color='#2E7D32')
+            dot.edge(f'decision_{i}', f'practical_{i}', penwidth='2', color='#1565C0')
 
-                # 技能获取
-                s.node(f'skill_{i}', '技能发展', shape='hexagon',
-                       style='filled', fillcolor='#C8E6C9', fontsize='10')
-                s.edge('path_a', f'skill_{i}', style='dashed')
-                s.edge('path_b', f'skill_{i}', style='dashed')
+            # 技能发展汇聚
+            dot.node(f'skill_{i}', '技能发展', shape='hexagon',
+                     style='filled', fillcolor='#C8E6C9', fontsize='10')
+            dot.edge(f'academic_{i}', f'skill_{i}', style='dashed', color='#66BB6A')
+            dot.edge(f'practical_{i}', f'skill_{i}', style='dashed', color='#42A5F5')
 
-    # 阶段间连接
-    for i in range(len(stages) - 1):
-        dot.edge(f'skill_{i}', f'stage_{i+1}', penwidth='2', color='#1976D2',
-                 label='进入下一阶段', fontsize='9')
+            prev_skill = f'skill_{i}'
 
-    # 评估与反馈
-    with dot.subgraph(name='cluster_eval') as s:
-        s.attr(label='📊 评估与反馈', style='filled', fillcolor=colors['outcome'],
-               fontsize='13', penwidth='2')
+    # 评估反馈（放在底部，简洁表示）
+    dot.node('assessment', '📊 能力评估\n(标准化测试)', shape='box',
+             style='filled,rounded', fillcolor='#E1BEE7', penwidth='1.5')
+    dot.node('feedback', '反馈调整\n(弱项强化)', shape='box',
+             style='filled,rounded', fillcolor='#E1BEE7', penwidth='1.5')
 
-        s.node('assess', '能力评估\n(标准化测试)', shape='box',
-               style='filled,rounded', fillcolor='#CE93D8', fontsize='10')
-        s.node('feedback', '反馈调整\n(弱项强化)', shape='box',
-               style='filled,rounded', fillcolor='#CE93D8', fontsize='10')
-        s.node('optimize', '路径优化\n(动态调整)', shape='note',
-               style='filled', fillcolor='#CE93D8', fontsize='10')
-
-        s.edge('assess', 'feedback')
-        s.edge('feedback', 'optimize')
-
-    # 评估连接到各阶段
-    dot.edge('skill_4', 'assess', penwidth='2', color='#7B1FA2',
-             label='阶段性评估', constraint='false')
-    dot.edge('optimize', 'choice_2', penwidth='1.5', color='#7B1FA2',
-             style='dotted', label='反馈调整', constraint='false')
-    dot.edge('optimize', 'choice_3', penwidth='1.5', color='#7B1FA2',
-             style='dotted', constraint='false')
+    dot.edge('assessment', 'feedback', penwidth='2')
+    dot.edge(f'skill_{len(stage_colors)-2}', 'assessment',
+             penwidth='2', color='#7B1FA2', label='阶段评估')
+    dot.edge('feedback', f'skill_2',
+             penwidth='1.5', color='#7B1FA2', style='dotted',
+             label='反馈调整', constraint='false')
 
     filepath = dot.render('docs/life_decision_tree_v2', cleanup=True)
     print(f"✅ 学习成长决策树 v2 已生成：{filepath}")
