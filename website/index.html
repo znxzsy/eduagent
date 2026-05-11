@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduAgent - AI 教育系统 | 教育 Agent + 智能批改 + 人生学习沙盒</title>
+    <meta name="description" content="基于多模态 AI 的教育系统，支持知识点讲解、智能批改、人生沙盒模拟">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">🎓 EduAgent</a>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#features">功能</a></li>
+                <li><a href="#demo">演示</a></li>
+                <li><a href="#architecture">架构</a></li>
+                <li><a href="#about">关于</a></li>
+                <li><a href="https://github.com/yourusername/eduagent" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 首页 Hero -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>🎓 EduAgent v2.0</h1>
+                <h2>下一代 AI 教育系统</h2>
+                <p class="tagline">教育 Agent + 智能批改 + 人生学习沙盒 + 多模态手写识别</p>
+                <div class="hero-buttons">
+                    <a href="#demo" class="btn btn-primary">在线演示</a>
+                    <a href="https://github.com/yourusername/eduagent" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                        查看源码
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">1300+</span>
+                        <span class="stat-label">代码行数</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">7</span>
+                        <span class="stat-label">核心模块</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">题库题目</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">v2.0</span>
+                        <span class="stat-label">多模态版本</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能特性 -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">核心功能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>教育 Agent</h3>
+                    <p>分阶段教学，从幼儿园到职业阶段自动适配课程。知识点讲解、学习计划生成、学习状态跟踪。</p>
+                    <ul class="feature-list">
+                        <li>✓ 7 个教育阶段</li>
+                        <li>✓ 动态难度调整</li>
+                        <li>✓ 个性化学习计划</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>智能批改</h3>
+                    <p>自动批改测验和作文，多维度评分系统，提供详细反馈和改进建议。</p>
+                    <ul class="feature-list">
+                        <li>✓ 测验自动批改</li>
+                        <li>✓ 作文多维度评分</li>
+                        <li>✓ 批量统计分析</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>人生学习沙盒</h3>
+                    <p>模拟人生不同阶段的学习与成长，事件驱动的技能成长系统。</p>
+                    <ul class="feature-list">
+                        <li>✓ 7 个人生阶段演进</li>
+                        <li>✓ 事件选择系统</li>
+                        <li>✓ 技能树成长</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>多模态批改</h3>
+                    <p>支持手写 OCR 识别、视觉推理、对抗攻击检测的图像批改系统。</p>
+                    <ul class="feature-list">
+                        <li>✓ 手写文字识别</li>
+                        <li>✓ Think-with-Image</li>
+                        <li>✓ 对抗样本检测</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 在线演示 -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2 class="section-title">在线演示</h2>
+            <div class="demo-container">
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="terminal-title">EduAgent CLI</span>
+                        <div class="terminal-buttons">
+                            <span class="btn-red"></span>
+                            <span class="btn-yellow"></span>
+                            <span class="btn-green"></span>
+                        </div>
+                    </div>
+                    <div class="terminal-body">
+                        <pre id="terminal-output">
+<span class="prompt">$</span> python3 edu_agent/main.py
+
+╔════════════════════════════════════════════╗
+║  🎓  EduAgent 教育系统 v2.0 (MM)          ║
+║   教育 Agent + 智能批改 + 人生学习沙盒      ║
+════════════════════════════════════════════╝
+
+📚 [数学] 一元二次方程
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 让我们用数学的方式来思考这个问题...
+📝 已学习次数：1
+💪 加油，学习新知识点总是需要时间的！
+
+📝 数学测验 (5 题):
+  1. sin(90°) = ?
+     ['0', '1', '-1', '0.5']
+
+📊 批改结果：80.0 分 (B (良好))
+  ✅ 第 1 题：1 → 1
+  ✅ 第 2 题：±2 → ±2
+                        </pre>
+                    </div>
+                </div>
+                <div class="demo-controls">
+                    <h3>快速体验</h3>
+                    <div class="control-group">
+                        <button class="demo-btn" onclick="runDemo('teach')">📚 知识点讲解</button>
+                        <button class="demo-btn" onclick="runDemo('quiz')">📝 生成测验</button>
+                        <button class="demo-btn" onclick="runDemo('grade')">✅ 智能批改</button>
+                        <button class="demo-btn" onclick="runDemo('sandbox')">🎮 人生沙盒</button>
+                    </div>
+                    <div class="install-guide">
+                        <h4>本地运行</h4>
+                        <code>git clone https://github.com/yourusername/eduagent.git</code>
+                        <code>cd eduagent</code>
+                        <code>python3 main.py</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 系统架构 -->
+    <section id="architecture" class="architecture">
+        <div class="container">
+            <h2 class="section-title">系统架构</h2>
+            <div class="architecture-content">
+                <div class="architecture-diagram">
+                    <img src="docs/architecture.png" alt="系统架构图" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="diagram-fallback" style="display:none;">
+                        <pre>
+    ┌─────────────────────────────────────┐
+    │        main.py (系统入口)           │
+    └─────────────────┬───────────────────┘
+                      │
+    ┌─────────────────┼───────────────────┐
+    │                 │                   │
+    ▼                 ▼                   ▼
+┌─────────┐    ┌──────────┐        ┌──────────┐
+│ core/   │    │ storage/ │        │  utils/  │
+│ 业务层  │    │ 存储层   │        │  工具层  │
+└─────────┘    └──────────┘        └──────────
+                        </pre>
+                    </div>
+                </div>
+                <div class="tech-stack">
+                    <h3>技术栈</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python 3.9+</span>
+                        <span class="tech-tag">Dataclasses</span>
+                        <span class="tech-tag">Enum</span>
+                        <span class="tech-tag">Graphviz</span>
+                        <span class="tech-tag">JSON</span>
+                        <span class="tech-tag">CLI</span>
+                        <span class="tech-tag">Multimodal</span>
+                        <span class="tech-tag">OCR</span>
+                    </div>
+                    <h3>模块划分</h3>
+                    <div class="module-list">
+                        <div class="module-item">
+                            <span class="module-name">models.py</span>
+                            <span class="module-desc">数据模型</span>
+                        </div>
+                        <div class="module-item">
+                            <span class="module-name">agent.py</span>
+                            <span class="module-desc">教育 Agent</span>
+                        </div>
+                        <div class="module-item">
+                            <span class="module-name">grader.py</span>
+                            <span class="module-desc">智能批改</span>
+                        </div>
+                        <div class="module-item">
+                            <span class="module-name">sandbox.py</span>
+                            <span class="module-desc">人生沙盒</span>
+                        </div>
+                        <div class="module-item">
+                            <span class="module-name">multimodal.py</span>
+                            <span class="module-desc">多模态处理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于 -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">关于项目</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>项目背景</h3>
+                    <p>EduAgent 是一个完整的 AI 教育平台，旨在提供个性化的学习体验。项目从单一的文本批改系统演进为支持多模态输入的智能教育系统。</p>
+                    <p>v2.0 版本引入了多模态能力，支持手写识别、视觉推理和对抗攻击检测，为教育 AI 系统的可靠性提供了新的解决方案。</p>
+                    <h3>技术亮点</h3>
+                    <ul>
+                        <li><strong>模块化设计</strong> - 7 个核心模块，职责清晰，易于扩展</li>
+                        <li><strong>多模态支持</strong> - 预留 GPT-4V/Qwen-VL/PaddleOCR 接口</li>
+                        <li><strong>人生沙盒</strong> - 创新的教育模拟系统，7 阶段演进</li>
+                        <li><strong>对抗检测</strong> - 提高 AI 系统可靠性，防止绕过</li>
+                    </ul>
+                </div>
+                <div class="about-stats">
+                    <div class="about-stat-card">
+                        <span class="about-stat-number">v2.0</span>
+                        <span class="about-stat-label">当前版本</span>
+                    </div>
+                    <div class="about-stat-card">
+                        <span class="about-stat-number">MIT</span>
+                        <span class="about-stat-label">开源协议</span>
+                    </div>
+                    <div class="about-stat-card">
+                        <span class="about-stat-number">2026</span>
+                        <span class="about-stat-label">创建年份</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>🎓 EduAgent v2.0</p>
+                    <p>AI 教育系统 | 多模态支持</p>
+                </div>
+                <div class="footer-right">
+                    <a href="https://github.com/yourusername/eduagent" target="_blank">GitHub</a>
+                    <a href="#features">功能</a>
+                    <a href="#demo">演示</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EduAgent. MIT License.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
